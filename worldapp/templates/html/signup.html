@@ -1,0 +1,114 @@
+{% extends 'html/base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+    
+    <div class="p-4 m-4">
+
+        
+        <div class="col-lg-5 rounded mx-auto border pt-4">
+            <div class="text-center col">
+            
+                {% comment %} <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Shopping_cart_with_food_clip_art_2.svg/307px-Shopping_cart_with_food_clip_art_2.svg.png" alt=""
+                class="" style="height: 150px;"> {% endcomment %}
+            <!-- <hr> -->
+            <div class="display-8">Create An Account</div>
+            <hr>
+            </div>
+            <h3 hidden class="alert alert-light border rounded">Create An Account</h3>
+            <form action="" method="POST">
+                
+                {% csrf_token %}
+
+                {% if error%}
+                <div class="alert alert-danger" role="alert">
+                {{error}}
+                </div>
+                {% endif %}
+                
+                 <div class="form-group">
+                    <label for="">Email</label>
+                    <input required type="email" name="email" id="email"
+                    value="{{values.email}}" 
+                    class=" form-control-sm form-control" placeholder="example@gmail.com">
+                </div>
+
+
+
+                <!-- firstname -->
+                <div class="form-group">
+                    <label for="">First Name</label>
+                    <input type="text" name="firstname"
+                     id="firstname" value="{{values.first_name}}" class="form-control form-control-sm" 
+                     placeholder="">
+                </div>
+
+                <!-- last name -->
+                <div class="form-group">
+                    <label for="">Last Name</label>
+                    <input type="text" name="lastname" 
+                    id="lastname" value="{{values.last_name}}" class="form-control form-control-sm"
+                    >
+                </div>
+
+                <!-- password -->
+                <div class="form-group">
+                    <label for="">Password</label>
+                    <input type="password" 
+                    name="password" 
+                    id="password"
+                     class="form-control form-control-sm" placeholder="********">
+                </div>
+
+                <hr>
+                <div class="form-group">
+                    <input class="btn btn-sm btn-info" id="mybtn" type="submit" value="Create An Account ">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+console.log("hello");
+
+
+{% comment %} 
+ function getdata(){
+    console.log("started getdata")
+    url="http://localhost:8000/api/signup/"
+    fetch(url).then((response)=>{             
+        console.log('Inside first then')
+        return response.text();
+    }).then((data)=>{
+        console.log('Inside second then')
+        console.log(data);
+    })
+
+}
+console.log('before running getdata')
+getdata()
+console.log('after running getdata')   {% endcomment %}
+
+
+
+{% comment %} let mybtn=document.getElementById("mybtn");
+function postdata(){
+    
+    url="http://localhost:8000/api/signup/";
+    data='{"email":"gaurav88717137@gmail.com","first_name":"gaurav","last_name":"chandel","password":"chandel@817"}'
+    params={
+        method:'post',
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body:data 
+    }
+    fetch(url,params).then(response=> response.json())
+    .then(data=> console.log(data))
+}
+postdata() {% endcomment %}
+</script>  
+{% endblock %}

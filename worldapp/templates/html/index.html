@@ -1,0 +1,166 @@
+
+{% extends "html/base.html" %}
+{% comment %} {% load static %} {% endcomment %}
+{% block content %}
+<div class="container" style="margin-top:50px">
+  <form action="" method="POST" id="indexform" data-state-url="{% url 'ajax_load_state' %}"
+    data-city-url="{% url 'ajax_load_city' %}">
+    {% csrf_token %}
+    <label>Country</label>
+
+    <select name="country" id="country" class="form-control">
+      <option value=""></option>
+      {% for country in countries %}
+      <option value="{{ country.id }}">{{ country.name }}</option>
+      {% endfor %}
+    </select>
+
+    <br>
+    <label>States</label>
+    <select name="state" id="state" class="form-control">
+
+    </select>
+    </br>
+    <label>City</label>
+    <select name="city" id="city" class="form-control">
+
+    </select>
+    <br>
+
+    <button type="button" id="btn" class="form-control btn btn-primary" onclick="getvalue()">Submit</button>
+    
+  </form>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+<script type="text/javascript">
+
+
+  $("#country").change(function () {
+    var url = $("#indexform").attr("data-state-url");
+    var country_id = $(this).val();
+    // var url = "http://localhost:8000/api/Address/" + country_id
+    $.ajax({
+      url: url,
+      data: {
+        'country': country_id,
+      },
+      success: function (data) {
+        $("#state").html(data);
+      }
+    });
+  });
+
+  $("#state").change(function () {
+    var url = $("#indexform").attr("data-city-url");
+    var state_id = $(this).val();
+    $.ajax({
+      url: url,
+      data: {
+        'state': state_id,
+      },
+      success: function (data) {
+        $("#city").html(data);
+      }
+    });
+  });
+
+
+  function getvalue() {
+    var country = document.getElementById("country");
+    var result = country.options[country.selectedIndex].value;
+    window.alert(result)
+    var state = document.getElementById("state");
+    var result1 = state.options[state.selectedIndex].value;
+    window.alert(result1)
+    var city = document.getElementById("city");
+    var result2 = city.options[city.selectedIndex].value;
+    window.alert(result2)  
+    if(result !==null && result1 !== null && result2 !== null){
+      alert('Working');
+      
+      datastring = '{"country":"'+ result +'","state":"'+result1 +'","city":"'+ result2 +'"}';
+      alert(datastring)
+      $.ajax({
+        url: "http://localhost:8000/api/Address/",
+        method: "POST",
+        data : datastring,        
+        contentType: "application/json",   
+
+        success: function(data){  
+           alert("Well done")  
+        },  
+        error: function(errMsg) {  
+            alert('Got an error');  
+        }
+    }); 
+
+      //var array=[];
+      //array.push(result,result1 ,result2);
+      //alert(array);
+      //submitData(array);
+    }
+    else {
+      alert("Hacked");
+    }
+
+  }
+
+
+ 
+  {% comment %} function submitData(array){
+    var country = document.getElementById("country");
+    var result = country.options[country.selectedIndex].value;
+
+    var state = document.getElementById("state");
+    var result1 = state.options[state.selectedIndex].value;
+
+    var city = document.getElementById("city");
+    var result2 = city.options[city.selectedIndex].value;
+    datastring= '{"Country":"'+ result +'","State":"'+result1 +'","City":"'+ result2 +'"}';
+    alert(datastring)
+   $.ajax({
+        url: "http://localhost:8000/api/Address/",
+        method: "POST",
+        data : datastring,        
+      
+        contentType: "json",
+        success: function(data){
+           alert("Well done")
+        },
+        error: function(errMsg) {
+            alert('Got an error');
+        }
+    });
+  } {% endcomment %}
+
+</script>
+
+
+{% endblock %}
+{% comment %} 
+$.ajax({
+url: "http://localhost:8000/api/Address/"+result
+type: 'post', // This is the default though, you don't actually need to always mention it
+data:result;
+
+success: function(data) {
+alert(data);
+},
+failure: function(data) {
+alert('Got an error');
+}
+}); 
+
+ $('#btn').click( function() {
+$.ajax({
+url : "http://localhost:8000/api/Address/",
+dataType: "json",
+success : function (data) {
+$('#country').text( data[0].country);
+$('#state').text( data[0].state);
+$('#acityge').text( data[0].city);
+}
+});
+}) {% endcomment %}
